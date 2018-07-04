@@ -60,6 +60,18 @@ class Board:
                 bfs_queue.append(next_pos)
                 self.update_tile(self.tiles[r][c].final_value, next_pos, tile_pos)
 
+    def max_path_value_recur(self, i, j):
+        (left, down) = (0, 0)
+
+        if i > 0:
+            down = self.max_path_value_recur(i-1, j)
+
+        if j > 0:
+            left = self.max_path_value_recur(i, j-1)
+
+        return max(left, down) + self.tiles[i][j].value
+
+
     def max_path_value(self):
         return self.tiles[self.row-1][self.col-1].final_value
 
@@ -80,6 +92,8 @@ class Board:
 
 board = Board(N, M)
 board.show()
+print "max path (recur) value:", board.max_path_value_recur(N-1, M-1)
+
 board.walk()
 print "max path value:", board.max_path_value()
 print "max path:", board.max_path()
